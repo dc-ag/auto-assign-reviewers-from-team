@@ -1,0 +1,27 @@
+name: "Auto Assign reviewers From Team"
+description: "Assign reviewers to a PR from a team"
+author: "dc AG"
+branding:
+  icon: "check"
+  color: "blue"
+inputs:
+  repo-token:
+    description: "Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}"
+    required: true  
+  admin-repo-token:
+      description: "GitHub Personal Access Token that has 'repo' rights"
+      required: true
+  team:
+    description: "Team to chose reviewers from"
+    required: true
+  amount:
+    description: "Amount of reviewers to assign from the given team, 0 to assign all. If the amount exceeds the member count of the team all members will be added"
+    required: false
+  use-team-reviewer-settings:
+    description: "Set to true if you want to use the team's reviewer settings instead of an specific amount"
+    required: false
+
+
+runs:
+  using: "node12"
+  main: "dist/index.js"
