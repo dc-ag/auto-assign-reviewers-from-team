@@ -106,7 +106,7 @@ function run() {
                 console.log("Request Status for getting team members: " + members.status);
                 // filter out PR author
                 let memberNames = members.data.map((a) => a.login);
-                memberNames = memberNames.filter((name) => name !== issue.owner);
+                memberNames = memberNames.filter((name) => { var _a; return name !== ((_a = pullRequest.data.user) === null || _a === void 0 ? void 0 : _a.login); });
                 console.log("Picking " + amount + " reviewer(s) from members: ", memberNames);
                 let finalReviewers = [];
                 if (amount === 0 || memberNames.length <= amount) {

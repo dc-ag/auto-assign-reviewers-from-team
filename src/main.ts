@@ -74,7 +74,9 @@ export async function run() {
       console.log("Request Status for getting team members: " + members.status);
       // filter out PR author
       let memberNames = members.data.map((a) => a.login);
-      memberNames = memberNames.filter((name) => name !== issue.owner);
+      memberNames = memberNames.filter(
+        (name) => name !== pullRequest.data.user?.login
+      );
 
       console.log(
         "Picking " + amount + " reviewer(s) from members: ",
