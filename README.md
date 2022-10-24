@@ -23,7 +23,8 @@ jobs:
           team: "team" # The team name
           amount: 0 # Amount of reviewers to assign from the given team, 0 to assign all. If the amount exceeds the member count of 
                     # the team all members will be added
-          use-team-reviewer-settings: false # Set to true if you want to use the team's reviewer settings instead of an specific amount
+          use-team-reviewer-settings: false # Set to true if you want to use the team's reviewer settings instead of a specific amount
+          ignore-branches-regex: "" # Regex to check branches. If matched the PR won't be assigned any reviewers via this workflow
 ```
 
 ## Build

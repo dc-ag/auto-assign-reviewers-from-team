@@ -11,6 +11,9 @@ export async function run() {
     const team = core.getInput("team", { required: true });
     const amount = parseInt(core.getInput("amount"));
     const useTeamSettings = core.getBooleanInput("use-team-reviewer-settings");
+    const ignoreBranchesRegex = core.getInput("ignore-branches-regex", {
+      required: false,
+    });
 
     const issue: { owner: string; repo: string; number: number } =
       github.context.issue;
@@ -23,8 +26,25 @@ export async function run() {
     const ghOrg = github.context.repo.owner;
 
     // See https://octokit.github.io/rest.js/
-    const repoClient = github.getOctokit(repoToken);
     const adminRepoClient = github.getOctokit(adminRepoToken);
+
+    let pullRequest = await adminRepoClient.rest.pulls.get({
+      owner: issue.owner,
+      repo: issue.repo,
+      pull_number: issue.number,
+    });
+
+    if (null == pullRequest) {
+      console.log("Pull request not found, skipping!");
+      return;
+    }
+
+    const prBranch = pullRequest.data.head.ref;
+
+    if (null !== prBranch.match(ignoreBranchesRegex)) {
+      console.log("Branch matches ignore pattern, skipping!");
+      return;
+    }
 
     if (useTeamSettings) {
       console.log("Using Team Settings ...");
@@ -34,6 +54,16 @@ export async function run() {
         pull_number: issue.number,
         team_reviewers: [team],
       });
+
+      // Remove team review afterwards (sometimes it's still present for some reason)
+      await adminRepoClient.rest.pulls.removeRequestedReviewers({
+        owner: issue.owner,
+        repo: issue.repo,
+        pull_number: issue.number,
+        reviewers: [],
+        team_reviewers: [team],
+      });
+
       console.log("... success!");
     } else {
       console.log("Using specific amount from team ...");

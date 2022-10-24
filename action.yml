@@ -20,6 +20,9 @@ inputs:
   use-team-reviewer-settings:
     description: "Set to true if you want to use the team's reviewer settings instead of an specific amount"
     required: false
+  ignore-branches-regex: 
+    description: "Regex to check branches. If matched the PR won't be assigned any reviewers via this workflow"
+    required: false
 
 
 runs:
