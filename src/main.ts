@@ -41,7 +41,10 @@ export async function run() {
 
     const prBranch = pullRequest.data.head.ref;
 
-    if (null !== prBranch.match(ignoreBranchesRegex)) {
+    if (
+      "" !== ignoreBranchesRegex &&
+      null !== prBranch.match(ignoreBranchesRegex)
+    ) {
       console.log("Branch matches ignore pattern, skipping!");
       return;
     }

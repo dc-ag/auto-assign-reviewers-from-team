@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Assign reviewers from team"
-        uses: dc-ag/auto-assign-reviewers-from-team@v1.0.0
+        uses: dc-ag/auto-assign-reviewers-from-team@v1.2.2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           admin-repo-token: ${{ secrets.GITHUB_ADMIN_REPO_TOKEN }} # GitHub Personal Access Token that has 'repo' rights
